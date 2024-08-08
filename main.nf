@@ -2,6 +2,7 @@
 nextflow.enable.dsl = 2
 
 process FOO {
+  container "quay.io/biocontainers/samtools:1.9--h91753b0_8"
   input:
   tuple val(metadata), path(bamfile)
   
@@ -10,6 +11,7 @@ process FOO {
 
   script:
   """
+  samtools --version
   echo $bamfile > ${metadata.sample_id}_output_bamfile.bam
   """
 }
