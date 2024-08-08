@@ -1,0 +1,3 @@
+{
+    "bamfiles": "$baseDir/tests/testdata/**.bam"
+}
