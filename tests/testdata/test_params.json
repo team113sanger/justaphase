@@ -1,3 +1,4 @@
 {
-    "bamfiles": "$baseDir/tests/testdata/**.bam"
+    "bamfiles": "$baseDir/tests/testdata/**.bam",
+    "manifest": "$baseDir/tests/testdata/manifest.tsv"
 }
