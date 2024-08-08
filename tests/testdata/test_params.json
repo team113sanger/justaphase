@@ -1,0 +1,4 @@
+{
+    "bamfiles": "$baseDir/tests/testdata/**.bam",
+    "manifest": "$baseDir/tests/testdata/manifest.tsv"
+}
