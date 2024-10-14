@@ -1,0 +1,6 @@
+{
+"genome_files": "/lustre/scratch124/casm/team78pipelines/reference/Cat/Felis_catus_9.0/genome{.fa,.fa.fai}",    
+"vcf_files": "/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap/mopup_inputs.tsv",
+"bam_files" : "/lustre/scratch125/casm/team113da/users/bf14/samples/**.bam",
+"outdir": "/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap/15_10_results"
+}
