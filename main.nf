@@ -1,5 +1,5 @@
 include { RUN_WHATSHAP } from './modules/whatshap.nf'
-include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS; FIND_MNV_VARIANTS; MERGE_AND_UNHEAD } from './modules/phase.nf'
+include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS; FIND_MNV_VARIANTS; MERGE_SORT_AND_UNHEAD } from './modules/phase.nf'
 
 
 process EXTRACT_MNVS {
@@ -51,11 +51,11 @@ workflow  {
     | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
     | set { intervals }
     FIND_MNV_VARIANTS(intervals) 
-    mnv_ch = FIND_MNV_VARIANTS.out.lines
-    .map{it, file, index -> tuple(file)}.collect()
+    mnv_ch = FIND_MNV_VARIANTS.out.lines.groupTuple().view()
+    // .map{it, file, index -> tuple(file)}.collect()
     index_ch = FIND_MNV_VARIANTS.out.lines
     .map{it, file, index -> tuple(index)}.collect()
-    MERGE_AND_UNHEAD(mnv_ch, index_ch)
+    MERGE_SORT_AND_UNHEAD(mnv_ch, index_ch)
     // groups_ch.collectFile(name: "test.txt",
     //                       storeDir:"/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap", 
     //                       newLine: false)

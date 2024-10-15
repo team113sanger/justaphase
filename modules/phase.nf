@@ -59,9 +59,9 @@ process FIND_MNV_VARIANTS {
 }
 
 
-process MERGE_AND_UNHEAD {
+process MERGE_SORT_AND_UNHEAD {
     module "bcftools-1.19/python-3.11.6"
-    publishDir "${params.outdir}/${meta.contrast}", mode: 'copy'
+    publishDir "${params.outdir}", mode: 'copy'
 
     input:
     path(regions)
@@ -73,7 +73,8 @@ process MERGE_AND_UNHEAD {
     script:
     """
     bcftools merge --force-samples $regions -o temp.vcf
-    bcftools view -H temp.vcf > mnv_lines.tsv
+    bcftools sort temp.vcf -o input_file_sorted.vcf
+    bcftools view -H input_file_sorted.vcf > mnv_lines.tsv
     """
 
 }
