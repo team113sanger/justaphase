@@ -44,18 +44,18 @@ workflow  {
 
     RUN_WHATSHAP(input_ch, genome)
     INDEX_PHASED_VARS(RUN_WHATSHAP.out.phased_vcf)
-    EXTRACT_MNVS(INDEX_PHASED_VARS.out.indexed_vcf, genome)
+    // EXTRACT_MNVS(INDEX_PHASED_VARS.out.indexed_vcf, genome)
 
-    // FIND_ADJACENT_VARIANTS(INDEX_PHASED_VARS.out.indexed_vcf)
-    // FIND_ADJACENT_VARIANTS.out.vcf_bed_pair \
-    // | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
-    // | set { intervals }
-    // FIND_MNV_VARIANTS(intervals) 
-    // mnv_ch = FIND_MNV_VARIANTS.out.lines
-    // .map{it, file, index -> tuple(file)}.collect()
-    // index_ch = FIND_MNV_VARIANTS.out.lines
-    // .map{it, file, index -> tuple(index)}.collect()
-    // MERGE_AND_UNHEAD(mnv_ch, index_ch)
+    FIND_ADJACENT_VARIANTS(INDEX_PHASED_VARS.out.indexed_vcf)
+    FIND_ADJACENT_VARIANTS.out.vcf_bed_pair \
+    | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
+    | set { intervals }
+    FIND_MNV_VARIANTS(intervals) 
+    mnv_ch = FIND_MNV_VARIANTS.out.lines
+    .map{it, file, index -> tuple(file)}.collect()
+    index_ch = FIND_MNV_VARIANTS.out.lines
+    .map{it, file, index -> tuple(index)}.collect()
+    MERGE_AND_UNHEAD(mnv_ch, index_ch)
     // groups_ch.collectFile(name: "test.txt",
     //                       storeDir:"/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap", 
     //                       newLine: false)
