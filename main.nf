@@ -51,10 +51,7 @@ workflow  {
     | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
     | set { intervals }
     FIND_MNV_VARIANTS(intervals) 
-    mnv_ch = FIND_MNV_VARIANTS.out.lines.groupTuple().view()
-    // .map{it, file, index -> tuple(file)}.collect()
-    // index_ch = FIND_MNV_VARIANTS.out.lines
-    // .map{it, file, index -> tuple(index)}.collect()
+    mnv_ch = FIND_MNV_VARIANTS.out.lines.groupTuple()
     MERGE_SORT_AND_UNHEAD(mnv_ch)
     // groups_ch.collectFile(name: "test.txt",
     //                       storeDir:"/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap", 
