@@ -64,8 +64,7 @@ process MERGE_SORT_AND_UNHEAD {
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
-    path(regions)
-    path(indices)
+    tuple val(meta), path(regions), path(indices)
 
     output:
     path("mnv_lines.tsv"), emit: lines
@@ -74,7 +73,7 @@ process MERGE_SORT_AND_UNHEAD {
     """
     bcftools merge --force-samples $regions -o temp.vcf
     bcftools sort temp.vcf -o input_file_sorted.vcf
-    bcftools view -H input_file_sorted.vcf > mnv_lines.tsv
+    bcftools view -H input_file_sorted.vcf > "${meta.sample_id}_mnv_lines.tsv"
     """
 
 }

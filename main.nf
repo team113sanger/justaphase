@@ -55,7 +55,7 @@ workflow  {
     // .map{it, file, index -> tuple(file)}.collect()
     // index_ch = FIND_MNV_VARIANTS.out.lines
     // .map{it, file, index -> tuple(index)}.collect()
-    // MERGE_SORT_AND_UNHEAD(mnv_ch, index_ch)
+    MERGE_SORT_AND_UNHEAD(mnv_ch)
     // groups_ch.collectFile(name: "test.txt",
     //                       storeDir:"/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap", 
     //                       newLine: false)
