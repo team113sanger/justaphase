@@ -7,7 +7,8 @@ process EXTRACT_MNVS {
     publishDir "${params.outdir}", mode: 'copy'
     input: 
     tuple val(meta), path(input), path(index)
-    path(ref_genome)
+    tuple path(reference), path(index)
+
 
     output:
     tuple val(meta), path("*_mnvs.vcf")
