@@ -43,9 +43,9 @@ workflow  {
 
 
     RUN_WHATSHAP(input_ch, genome)
-    EXTRACT_MNVS(RUN_WHATSHAP.out.phased_vcf, genome)
+    INDEX_PHASED_VARS(RUN_WHATSHAP.out.phased_vcf)
+    EXTRACT_MNVS(INDEX_PHASED_VARS.out.indexed_vcf, genome)
 
-    // INDEX_PHASED_VARS(RUN_WHATSHAP.out.phased_vcf)
     // FIND_ADJACENT_VARIANTS(INDEX_PHASED_VARS.out.indexed_vcf)
     // FIND_ADJACENT_VARIANTS.out.vcf_bed_pair \
     // | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
