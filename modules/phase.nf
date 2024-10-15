@@ -67,7 +67,7 @@ process MERGE_SORT_AND_UNHEAD {
     tuple val(meta), path(regions), path(indices)
 
     output:
-    path("mnv_lines.tsv"), emit: lines
+    path("*mnv_lines.tsv"), emit: lines
 
     script:
     """
