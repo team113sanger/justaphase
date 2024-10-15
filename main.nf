@@ -15,7 +15,7 @@ process EXTRACT_MNVS {
     script: 
     def refbase = reference[0].baseName
     """
-    bcftools norm -m +both -c s -f ${refbase}.fa -o merged.vcf $input
+    bcftools norm -m +both -c s -f ${refbase} -o merged.vcf $input
     bcftools view -i 'length(REF)>1 || length(ALT)>1' merged.vcf > ${meta.contrast}_mnvs.vcf
     """
 
