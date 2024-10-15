@@ -1,5 +1,5 @@
 include { RUN_WHATSHAP } from './modules/whatshap.nf'
-include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS } from './modules/phase.nf'
+include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS; FIND_MNV_VARIANTS; MERGE_AND_UNHEAD } from './modules/phase.nf'
 
 
 process EXTRACT_MNVS {
