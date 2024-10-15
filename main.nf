@@ -12,8 +12,9 @@ process EXTRACT_MNVS {
     output:
     tuple val(meta), path("*_mnvs.vcf")
     script: 
+    def refbase = reference[0].baseName
     """
-    bcftools norm -m +both -c s -f $ref_genome -o merged.vcf $input
+    bcftools norm -m +both -c s -f ${refbase}.fa -o merged.vcf $input
     bcftools view -i 'length(REF)>1 || length(ALT)>1' merged.vcf > ${meta.contrast}_mnvs.vcf
     """
 
@@ -41,7 +42,7 @@ workflow  {
 
 
     RUN_WHATSHAP(input_ch, genome)
-    EXTRACT_MNVS(RUN_WHATSHAP.out.phased_vcf)
+    EXTRACT_MNVS(RUN_WHATSHAP.out.phased_vcf, genome)
 
     // INDEX_PHASED_VARS(RUN_WHATSHAP.out.phased_vcf)
     // FIND_ADJACENT_VARIANTS(INDEX_PHASED_VARS.out.indexed_vcf)
