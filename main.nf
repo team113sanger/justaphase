@@ -2,6 +2,24 @@ include { RUN_WHATSHAP } from './modules/whatshap.nf'
 include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS } from './modules/phase.nf'
 
 
+process EXTRACT_MNVS {
+    module "bcftools-1.19/python-3.11.6"
+    publishDir "${params.outdir}", mode: 'copy'
+    input: 
+    tuple val(meta), path(input), path(index)
+    path(ref_genome)
+
+    output:
+    tuple val(meta), path("*_mnvs.vcf")
+    script: 
+    """
+    bcftools norm -m +both -c s -f $ref_genome -o merged.vcf $input
+    bcftools view -i 'length(REF)>1 || length(ALT)>1' merged.vcf > ${meta.contrast}_mnvs.vcf
+    """
+
+
+}
+
 workflow  {
     genome = file(params.genome_files, checkIfExists: true)
     
@@ -23,8 +41,10 @@ workflow  {
 
 
     RUN_WHATSHAP(input_ch, genome)
-    INDEX_PHASED_VARS(RUN_WHATSHAP.out.phased_vcf)
-    FIND_ADJACENT_VARIANTS(INDEX_PHASED_VARS.out.indexed_vcf)
+    EXTRACT_MNVS(RUN_WHATSHAP.out.phased_vcf)
+
+    // INDEX_PHASED_VARS(RUN_WHATSHAP.out.phased_vcf)
+    // FIND_ADJACENT_VARIANTS(INDEX_PHASED_VARS.out.indexed_vcf)
     // FIND_ADJACENT_VARIANTS.out.vcf_bed_pair \
     // | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
     // | set { intervals }
