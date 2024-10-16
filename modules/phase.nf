@@ -47,6 +47,7 @@ process FIND_MNV_VARIANTS {
 
     output:
     tuple val(meta), path("*.vcf.gz"), path("*.csi"), emit: lines
+    tuple val(meta), path("*_mnv_lines.tsv"), emit: queries
 
     script:
     """
@@ -54,6 +55,7 @@ process FIND_MNV_VARIANTS {
     -r "${bed_values.chr}:${bed_values.start}-${bed_values.stop}" $vcf_file \
     -O z -o "${bed_values.chr}:${bed_values.start}-${bed_values.stop}.vcf.gz"
     bcftools index "${bed_values.chr}:${bed_values.start}-${bed_values.stop}.vcf.gz"
+    bcftools view -H $region > "${meta.sample_id}_mnv_lines.tsv"
     """
 
 }
@@ -64,16 +66,14 @@ process MERGE_SORT_AND_UNHEAD {
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
-    tuple val(meta), path(regions), path(indices)
+    tuple val(meta), path(region), path(indices)
 
     output:
     path("*mnv_lines.tsv"), emit: lines
 
     script:
     """
-    bcftools merge --force-samples $regions -o temp.vcf
-    bcftools sort temp.vcf -o input_file_sorted.vcf
-    bcftools view -H input_file_sorted.vcf > "${meta.sample_id}_mnv_lines.tsv"
+    bcftools view -H $region > "${meta.sample_id}_mnv_lines.tsv"
     """
 
 }
@@ -93,4 +93,17 @@ process INTERSECT {
     """
 }
 
+process COMPOSE_MNV_VARIANTS {
+    container 'docker://gitlab-registry.internal.sanger.ac.uk/dermatlas/fur_phaser_py/feature/build_env'
+    input:
+    tuple val(meta), path(subset), path(index)
+    tuple val(meta), path(vcf_file), path(vcf_index)
 
+    output: 
+    path("*.vcf")
+
+    script:
+    """
+    python3 /opt/repo/src/fur_phaser_py/phaser.py -c $subset -v $vcf_file
+    """
+}

@@ -1,26 +1,7 @@
 include { RUN_WHATSHAP } from './modules/whatshap.nf'
-include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS; FIND_MNV_VARIANTS; MERGE_SORT_AND_UNHEAD } from './modules/phase.nf'
+include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS; FIND_MNV_VARIANTS; MERGE_SORT_AND_UNHEAD; FIND_PHASEABLE_VARIANTS } from './modules/phase.nf'
 
 
-process EXTRACT_MNVS {
-    module "bcftools-1.19/python-3.11.6"
-    publishDir "${params.outdir}", mode: 'copy'
-    input: 
-    tuple val(meta), path(input), path(index)
-    tuple path(reference), path(index)
-
-
-    output:
-    tuple val(meta), path("*_mnvs.vcf")
-    script: 
-    def refbase = reference[0].baseName
-    """
-    bcftools norm -m +both -c s -f ${refbase} -o merged.vcf $input
-    bcftools view -i 'strlen(REF)>1 || strlen(ALT)>1' merged.vcf > ${meta.contrast}_mnvs.vcf
-    """
-
-
-}
 
 workflow  {
     genome = file(params.genome_files, checkIfExists: true)
@@ -49,8 +30,8 @@ workflow  {
     | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
     | set { intervals }
     FIND_MNV_VARIANTS(intervals) 
-    mnv_ch = FIND_MNV_VARIANTS.out.lines.groupTuple()
-    MERGE_SORT_AND_UNHEAD(mnv_ch)
+    mnv_ch = FIND_MNV_VARIANTS.out.queries.groupTuple()
+    COMPOSE_MNV_VARIANTS(mnv_ch,INDEX_PHASED_VARS.out.indexed_vcf)
     // groups_ch.collectFile(name: "test.txt",
     //                       storeDir:"/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap", 
     //                       newLine: false)
