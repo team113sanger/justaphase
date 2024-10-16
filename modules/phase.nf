@@ -95,7 +95,7 @@ process INTERSECT {
 
 process COMPOSE_MNV_VARIANTS {
     container 'docker://gitlab-registry.internal.sanger.ac.uk/dermatlas/fur_phaser_py/feature/build_env:ab3bdcfc'
-'
+
     input:
     tuple val(meta), path(subset)
     tuple val(meta), path(vcf_file), path(vcf_index)
