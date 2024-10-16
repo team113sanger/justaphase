@@ -55,7 +55,7 @@ process FIND_MNV_VARIANTS {
     -r "${bed_values.chr}:${bed_values.start}-${bed_values.stop}" $vcf_file \
     -O z -o "${bed_values.chr}:${bed_values.start}-${bed_values.stop}.vcf.gz"
     bcftools index "${bed_values.chr}:${bed_values.start}-${bed_values.stop}.vcf.gz"
-    bcftools view -H $region > "${meta.sample_id}_mnv_lines.tsv"
+    bcftools view -H "${bed_values.chr}:${bed_values.start}-${bed_values.stop}.vcf.gz" > "${meta.sample_id}_"${bed_values.chr}:${bed_values.start}-${bed_values.stop}_mnv_lines.tsv"
     """
 
 }
