@@ -104,6 +104,7 @@ process COMPOSE_MNV_VARIANTS {
 
     script:
     """
-    python3 /opt/repo/src/fur_phaser_py/phaser.py -c $subset -v $vcf_file
+    python3 /opt/repo/src/fur_phaser_py/phaser.py -c $subset -v $vcf_file \
+    -o adjusted.vcf
     """
 }
