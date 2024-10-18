@@ -101,11 +101,11 @@ process COMPOSE_MNV_VARIANTS {
     tuple val(meta), path(vcf_file), path(vcf_index)
 
     output: 
-    path("*.vcf")
+    path("*.vcf.gz")
 
     script:
     """
     python3 /opt/repo/src/fur_phaser_py/phaser.py -c $subset -p $vcf_file \
-    -o adjusted.vcf
+    -o "${meta.contrast}.vcf.gz"
     """
 }
