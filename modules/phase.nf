@@ -42,6 +42,7 @@ process FIND_ADJACENT_VARIANTS {
 
 process FIND_MNV_CANDIDATES {
     module "bcftools-1.19/python-3.11.6"
+    label "phase"
     input:
     tuple val(meta), val(bed_values), path(vcf_file), path(index)
 
@@ -63,6 +64,7 @@ process FIND_MNV_CANDIDATES {
 
 process MERGE_SORT_AND_UNHEAD {
     module "bcftools-1.19/python-3.11.6"
+    label "phase"
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
@@ -78,7 +80,7 @@ process MERGE_SORT_AND_UNHEAD {
 
 }
 
-process EXTACT_BAITSET_VARIANTS {
+process EXTRACT_BAITSET_VARIANTS {
     publishDir "${params.outdir}", mode: 'copy'
     module "bedtools2-2.31.1/python-3.10.10"
     input: 
