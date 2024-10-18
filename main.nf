@@ -41,6 +41,7 @@ workflow  {
     | set { intervals }
     FIND_MNV_CANDIDATES(intervals) 
     mnv_ch = FIND_MNV_CANDIDATES.out.queries.groupTuple()
+    variant_sets = mnv_ch.join(INDEX_PHASED_VARS.out.indexed_vcf)
     COMPOSE_MNV_VARIANTS(mnv_ch,INDEX_PHASED_VARS.out.indexed_vcf)
     EXTRACT_BAITSET_VARIANTS(COMPOSE_MNV_VARIANTS.out.mnv_file,baitset)
     ANNOTATE_VARIANTS(EXTRACT_BAITSET_VARIANTS.out.bait_variants, 

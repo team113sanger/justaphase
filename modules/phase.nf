@@ -102,8 +102,7 @@ process COMPOSE_MNV_VARIANTS {
     container 'docker://gitlab-registry.internal.sanger.ac.uk/dermatlas/fur_phaser_py/feature/build_env:1d53ec06'
 
     input:
-    tuple val(meta), path(subset)
-    tuple val(meta), path(vcf_file), path(vcf_index)
+    tuple val(meta), path(subset), path(vcf_file), path(vcf_index)
 
     output: 
     tuple val(meta), path("*.vcf.gz"), emit: mnv_file
