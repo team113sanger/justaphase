@@ -1,10 +1,20 @@
 include { RUN_WHATSHAP } from './modules/whatshap.nf'
-include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS; FIND_MNV_VARIANTS; MERGE_SORT_AND_UNHEAD; COMPOSE_MNV_VARIANTS } from './modules/phase.nf'
+include { INDEX_PHASED_VARS; FIND_ADJACENT_VARIANTS; FIND_MNV_CANDIDATES; MERGE_SORT_AND_UNHEAD; COMPOSE_MNV_VARIANTS; EXTACT_BAITSET_VARIANTS } from './modules/phase.nf'
+include { ANNOTATE_VARIANTS } from './modules/annotate_variants.nf'
 
 
 
 workflow  {
     genome = file(params.genome_files, checkIfExists: true)
+    baitset = file(params.baitset, checkIfExists: true)
+    vep_cache = file(params.vep_cache, checkIfExists: true)
+    custom_files = Channel.of(params.custom_files.split(';'))
+    .map(it -> file(it, checkIfExists: true))
+    .collect()
+    custom_args = Channel.of(params.custom_args.split(';'))
+    .collect()
+    .map { '--custom ' + it.join(' --custom ') }
+
     
     bamfile_ch  = Channel.fromPath(params.bam_files,checkIfExists: true) \
     | map { file -> 
@@ -29,11 +39,21 @@ workflow  {
     FIND_ADJACENT_VARIANTS.out.vcf_bed_pair \
     | splitCsv(elem: 1, header: ['chr', 'start', 'stop'], sep: '\t')
     | set { intervals }
-    FIND_MNV_VARIANTS(intervals) 
-    mnv_ch = FIND_MNV_VARIANTS.out.queries.groupTuple()
+    FIND_MNV_CANDIDATES(intervals) 
+    mnv_ch = FIND_MNV_CANDIDATES.out.queries.groupTuple()
     COMPOSE_MNV_VARIANTS(mnv_ch,INDEX_PHASED_VARS.out.indexed_vcf)
-    // groups_ch.collectFile(name: "test.txt",
-    //                       storeDir:"/lustre/scratch125/casm/team113da/users/bf14/variant_caller_benchmarking/whatshap/fur_whatshap", 
-    //                       newLine: false)
-    
+    EXTACT_BAITSET_VARIANTS(COMPOSE_MNV_VARIANTS.out.mnv_file,baitset)
+    ANNOTATE_VARIANTS(EXTACT_BAITSET_VARIANTS.out.bait_variants, 
+                    vep_cache, 
+                    custom_files,
+                    custom_args,
+                    genome,
+                    params.species,
+                    params.assembly,
+                    params.db_version)
+
+
+
+
+
 }

@@ -40,7 +40,7 @@ process FIND_ADJACENT_VARIANTS {
 
 }
 
-process FIND_MNV_VARIANTS {
+process FIND_MNV_CANDIDATES {
     module "bcftools-1.19/python-3.11.6"
     input:
     tuple val(meta), val(bed_values), path(vcf_file), path(index)
@@ -78,14 +78,14 @@ process MERGE_SORT_AND_UNHEAD {
 
 }
 
-process INTERSECT {
+process EXTACT_BAITSET_VARIANTS {
     module "bedtools2-2.31.1/python-3.10.10"
     input: 
     tuple val(meta), path(vcf_file) 
     path(baitset)
     
     output:
-    tuple val(meta), path(".baitset_only.vcf.gz")
+    tuple val(meta), path(".baitset_only.vcf.gz"), emit: bait_variants
     
     script: 
     """
@@ -101,7 +101,7 @@ process COMPOSE_MNV_VARIANTS {
     tuple val(meta), path(vcf_file), path(vcf_index)
 
     output: 
-    path("*.vcf.gz")
+    path("*.vcf.gz"), emit: mnv_file
 
     script:
     """
