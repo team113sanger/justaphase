@@ -43,7 +43,7 @@ workflow  {
     mnv_ch = FIND_MNV_CANDIDATES.out.queries.groupTuple()
     COMPOSE_MNV_VARIANTS(mnv_ch,INDEX_PHASED_VARS.out.indexed_vcf)
     EXTRACT_BAITSET_VARIANTS(COMPOSE_MNV_VARIANTS.out.mnv_file,baitset)
-    ANNOTATE_VARIANTS(EXTACT_BAITSET_VARIANTS.out.bait_variants, 
+    ANNOTATE_VARIANTS(EXTRACT_BAITSET_VARIANTS.out.bait_variants, 
                     vep_cache, 
                     custom_files,
                     custom_args,
