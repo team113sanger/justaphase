@@ -60,7 +60,7 @@ process ANNOTATE_VARIANTS {
     --output_file ${outfname} \
     --cache \
     --dir ${vep_cache} \
-    --fasta ${ref_genome} \
+    --fasta $refbase \
     --db_version ${db_version} \
     --species ${species} \
     --assembly ${assembly_name} \
