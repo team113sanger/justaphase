@@ -85,7 +85,7 @@ process EXTACT_BAITSET_VARIANTS {
     path(baitset)
     
     output:
-    tuple val(meta), path(".baitset_only.vcf.gz"), emit: bait_variants
+    tuple val(meta), path("*.baitset_only.vcf.gz"), emit: bait_variants
     
     script: 
     """
