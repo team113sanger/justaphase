@@ -8,7 +8,7 @@ process ANNOTATE_VARIANTS {
     path(vep_cache)
     path(custom_files)
     val(custom_args)
-    path(ref_genome)
+    tuple path(reference), path(index)
     val(species)
     val(assembly_name)
     val(db_version)
@@ -17,6 +17,7 @@ process ANNOTATE_VARIANTS {
     tuple val(meta), path("*vep.vcf.gz"),path("*vep.vcf.gz.tbi"), emit: vep_annotation
     script: 
     def outfname = "${vcf_file}".replace(".vcf.gz", "") + ".vep.vcf.gz"
+    def refbase = reference[0].baseName
     if (species == "homo_sapiens"){
     """
     vep -i ${vcf_file} \
@@ -39,7 +40,7 @@ process ANNOTATE_VARIANTS {
     --canonical \
     --hgvs \
     --shift_hgvs 1 \
-    --fasta ${ref_genome} \
+    --fasta $refbase \
     $custom_args \
     --compress_output bgzip \
     --mane \
