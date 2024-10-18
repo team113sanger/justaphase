@@ -101,7 +101,7 @@ process COMPOSE_MNV_VARIANTS {
     tuple val(meta), path(vcf_file), path(vcf_index)
 
     output: 
-    path("*.vcf.gz"), emit: mnv_file
+    tuple val(meta), path("*.vcf.gz"), emit: mnv_file
 
     script:
     """
