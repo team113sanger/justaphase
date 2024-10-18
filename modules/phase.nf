@@ -79,6 +79,7 @@ process MERGE_SORT_AND_UNHEAD {
 }
 
 process EXTACT_BAITSET_VARIANTS {
+    publishDir "${params.outdir}", mode: 'copy'
     module "bedtools2-2.31.1/python-3.10.10"
     input: 
     tuple val(meta), path(vcf_file) 
@@ -95,6 +96,7 @@ process EXTACT_BAITSET_VARIANTS {
 }
 
 process COMPOSE_MNV_VARIANTS {
+    publishDir "${params.outdir}", mode: 'copy'
     container 'docker://gitlab-registry.internal.sanger.ac.uk/dermatlas/fur_phaser_py/feature/build_env:1d53ec06'
 
     input:
