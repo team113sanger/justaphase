@@ -88,8 +88,9 @@ process EXTACT_BAITSET_VARIANTS {
     tuple val(meta), path("*.baitset_only.vcf.gz"), emit: bait_variants
     
     script: 
+    def outfname = "${vcf_file}".replace(".vcf.gz", "") + ".baitset_only.vcf.gz"
     """
-    bedtools intersect -header -a $vcf_file -b $baitset > "${meta.sample_id}.baitset_only.vcf.gz"
+    bedtools intersect -header -a $vcf_file -b $baitset > $outfname
     """
 }
 
