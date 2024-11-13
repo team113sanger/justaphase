@@ -44,6 +44,7 @@ process ANNOTATE_VARIANTS {
     $custom_args \
     --compress_output bgzip \
     --mane \
+    --protein \
     --numbers \
     --polyphen p \
     --domain \
@@ -81,6 +82,7 @@ process ANNOTATE_VARIANTS {
     --shift_hgvs 1 \
     --compress_output bgzip \
     --mane \
+    --protein \
     --numbers \
     --fork 4 \
     --domains
