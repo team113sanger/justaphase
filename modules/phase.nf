@@ -2,7 +2,6 @@
 process INDEX_PHASED_VARS {
     publishDir "${params.outdir}", mode: 'copy'
     label "phase"
-    module "bcftools-1.19/python-3.11.6"
 
     input: 
     tuple val(meta), path(vcf_file)
@@ -41,7 +40,6 @@ process FIND_ADJACENT_VARIANTS {
 }
 
 process FIND_MNV_CANDIDATES {
-    module "bcftools-1.19/python-3.11.6"
     label "phase"
     input:
     tuple val(meta), val(bed_values), path(vcf_file), path(index)
@@ -63,7 +61,6 @@ process FIND_MNV_CANDIDATES {
 
 
 process MERGE_SORT_AND_UNHEAD {
-    module "bcftools-1.19/python-3.11.6"
     label "phase"
     publishDir "${params.outdir}", mode: 'copy'
 

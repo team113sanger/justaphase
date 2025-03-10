@@ -1,6 +1,5 @@
 process RUN_WHATSHAP {
     publishDir "${params.outdir}", mode: 'copy'
-    container "quay.io/biocontainers/whatshap:2.3--py39h1f90b4d_0"
     
     input:
     tuple val(meta), path(vcf_file), path(bam_file), path(bai)

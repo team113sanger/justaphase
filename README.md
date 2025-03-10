@@ -5,14 +5,21 @@
 
 ## Introduction
 
-X is a bioinformatics pipeline written in [Nextflow](http://www.nextflow.io) for g
+Vairant_phaser_nf is a bioinformatics pipeline written in [Nextflow](http://www.nextflow.io) that can be used for species-agnostic assembly and annotaton of MNVS from Caveman SNV calls. 
 
 ## Pipeline summary
 
-In brief, the pipeline takes
-
+In brief, the pipeline takes a set of bam files and corresponding Caveman VCFs and finds those variants which can be phased to produce MNVs. It utilises CASM-Smartphase and Whatshap for phasing and reconstructs haplotypes with 
+fur_phaser_py, an internally developed tool for merging SNVs with the same phase group.
 
 ## Inputs 
+- `vcf_files`: Path to a set of Caveman VCF files to be phased
+- `bam_files`: Path to a set of corresponding bam files to use in phasing
+- `genome`: The reference genome file `.fa` file and corresponding index files 
+- `baitset`: A bed file descibing the regoions that were used for targeted capture 
+- `vep_cache`: Path to a local ensembl vep cache to use in variant annotation
+-`custom_files`: Path to custom files used in generating vep annotations
+
 
 ## Usage 
 
@@ -22,7 +29,6 @@ An example wrapper script:
 ```
 #!/bin/bash
 #BSUB -q normal
-#BSUB -G team113-grp
 #BSUB -R "select[mem>8000] rusage[mem=8000] span[hosts=1]"
 #BSUB -M 8000
 #BSUB -oo nf_out.o
@@ -44,48 +50,8 @@ nextflow run 'https://gitlab.internal.sanger.ac.uk/DERMATLAS/analysis-methods/th
 -profile farm22 
 ```
 
-
-When running the pipeline for the first time on the farm you will need to provide credentials to pull singularity containers from the team113 sanger gitlab. These should be provided as environment variables:
-`SINGULARITY_DOCKER_USERNAME`=userid
-`SINGULARITY_DOCKER_PASSWORD`=YOUR_GITLAB_LOGIN_PASSWORD
-
-You can fix these variables to load by default by adding the following lines to your `~/.bashrc` file
-```
-export SINGULARITY_DOCKER_USERNAME=userid
-export SINGULARITY_DOCKER_PASSWORD=YOUR_GITLAB_LOGIN_PASSWORD
-```
-
 The pipeline can configured to run on either Sanger OpenStack secure-lustre instances or farm22 by changing the profile speicified:
 `-profile secure_lustre` or `-profile farm22`. 
-
-Pipeline visualisation
-Created using nextflow's in-built visualitation features.
-nextflow run main.nf -preview -with-dag -params-file tests/testdata/test_params.json flowchart.mmd
-
-```mermaid
-flowchart TB
-    
-```
-
-## Testing
-
-This pipeline has been developed with the [nf-test](http://nf-test.com) testing framework. Unit tests and small test data are provided within the pipeline `test` subdirectory. A snapshot has been taken of the outputs of most steps in the pipeline to help detect regressions when editing. You can run all tests on openstack with:
-
-```
-nf-test test 
-```
-and individual tests with:
-```
-nf-test test tests/modules/ascat_exomes.nf.test
-```
-
-For faster testing of the flow of data through the pipeline **without running any of the tools involved**, stubs have been provided to mock the results of each succesful step.
-```
-nextflow run main.nf \
--params-file params.json \
--c tests/nextflow.config \
---stub-run
-```
 
 
 
