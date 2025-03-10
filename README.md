@@ -1,4 +1,4 @@
-# TBC 
+# project_fur_variant_phasing_nf
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.04.5-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
@@ -34,17 +34,16 @@ An example wrapper script:
 #BSUB -oo nf_out.o
 #BSUB -eo nf_out.e
 
-PARAMS_FILE="/lustre/scratch125/casm/team113da/users/jb63/nf_germline_testing/params.json"
+PARAMS_FILE="<YOUR_PARAMS_FILE>"
 
 # Load module dependencies
 module load nextflow-23.10.0
-module load /software/modules/ISG/singularity/3.11.4
-module load /software/team113/modules/modulefiles/tw/0.6.2
+module load singularity/3.11.4
 
 # Create a nextflow job that will spawn other jobs
 
-nextflow run 'https://gitlab.internal.sanger.ac.uk/DERMATLAS/analysis-methods/this_pipeline' \
--r 0.1.1 \
+nextflow run 'https://github.com/team113sanger/project_fur_variant_phasing_nf' \
+-r 0.1.3 \
 -params-file $PARAMS_FILE \
 -c nextflow.config \
 -profile farm22 
