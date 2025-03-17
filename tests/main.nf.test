@@ -6,9 +6,10 @@ nextflow_pipeline {
     test("Should run without failures") {
 
         when {
-        params {
-            load("$baseDir/tests/testdata/test_params.json")
-        }
+            params {
+                // define parameters here. Example: 
+                // outdir = "tests/results"
+            }
         }
 
         then {

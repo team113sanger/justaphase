@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-03-17
+### Changed
+- Rename + ensure modules are drop in replaced with appropriate containers 
+- Add support for running from manifest path offsite
+
+
+## [0.1.3] - 2025-03-10
+### Changed
+- Preparation for externalisation - documentation and moving path in manifest
+
 ## [0.1.2] - 2024-11-13
 ### Changed
 - Added --protein flag to VEP annotation command

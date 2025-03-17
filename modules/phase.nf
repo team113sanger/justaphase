@@ -1,8 +1,8 @@
 
 process INDEX_PHASED_VARS {
     publishDir "${params.outdir}", mode: 'copy'
+    container "quay.io/biocontainers/bcftools:1.19--h8b25389_1"
     label "phase"
-    module "bcftools-1.19/python-3.11.6"
 
     input: 
     tuple val(meta), path(vcf_file)
@@ -22,7 +22,7 @@ process INDEX_PHASED_VARS {
 process FIND_ADJACENT_VARIANTS {
     publishDir "${params.outdir}", mode: 'copy'
     label "casm_smartphase"
-    module "/software/CASM/modules/modulefiles/casm-smart-phase/0.1.8"
+    container "quay.io/wtsicgp/casm-smart-phase:0.1.8"
     
     input:
     tuple val(meta), path(vcf), path(index)
@@ -41,8 +41,9 @@ process FIND_ADJACENT_VARIANTS {
 }
 
 process FIND_MNV_CANDIDATES {
-    module "bcftools-1.19/python-3.11.6"
+    container "quay.io/biocontainers/bcftools:1.19--h8b25389_1"
     label "phase"
+    
     input:
     tuple val(meta), val(bed_values), path(vcf_file), path(index)
 
@@ -63,8 +64,8 @@ process FIND_MNV_CANDIDATES {
 
 
 process MERGE_SORT_AND_UNHEAD {
-    module "bcftools-1.19/python-3.11.6"
     label "phase"
+    container "quay.io/biocontainers/bcftools:1.19--h8b25389_1"
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
@@ -82,7 +83,7 @@ process MERGE_SORT_AND_UNHEAD {
 
 process EXTRACT_BAITSET_VARIANTS {
     publishDir "${params.outdir}", mode: 'copy'
-    module "bedtools2-2.31.1/python-3.10.10"
+    container "quay.io/biocontainers/bedtools:2.31.1--h13024bc_3"
     input: 
     tuple val(meta), path(vcf_file) 
     path(baitset)
