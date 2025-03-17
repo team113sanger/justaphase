@@ -14,7 +14,7 @@ In brief, the pipeline takes a set of bam files and corresponding Caveman VCFs a
 ## Inputs 
 - `vcf_files`: Path to a set of Caveman VCF files to be phased
 - `bam_files`: Path to a set of corresponding bam files to use in phasing
-- `genome`: The reference genome file `.fa` file and corresponding index files 
+- `genome`: The reference genome file `.fa` file and corresponding index files (`fa.fai`, `fa.dict`)
 - `baitset`: A bed file descibing the regoions that were used for targeted capture 
 - `vep_cache`: Path to a local ensembl vep cache to use in variant annotation
 -`custom_files`: Path to custom files used in generating vep annotations
