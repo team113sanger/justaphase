@@ -41,8 +41,8 @@ module load singularity/3.11.4
 
 # Create a nextflow job that will spawn other jobs
 
-nextflow run 'https://gitlab.internal.sanger.ac.uk/DERMATLAS/analysis-methods/justaphase' \
--r 0.1.3 \
+nextflow run 'https://github.com/team113sanger/justaphase' \
+-r 0.2.0 \
 -params-file $PARAMS_FILE \
 -c nextflow.config \
 -profile farm22 
