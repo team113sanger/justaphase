@@ -62,6 +62,13 @@ secure-lustre-test:
     - which nextflow
     - which nf-test
     - echo "WORK_DIR=$PWD"
+    
+    #
+    # PREPARE
+    # Remove any previous test directories & docker images
+    #
+    - rm -rf .nextflow .nf-test
+    - docker system prune -a -f
 
     #
     # MAIN
