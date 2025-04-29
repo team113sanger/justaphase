@@ -48,8 +48,8 @@ nextflow run 'https://github.com/team113sanger/justaphase' \
 -profile farm22 
 ```
 
-The pipeline can configured to run on either Sanger OpenStack secure-lustre instances or farm22 by changing the profile speicified:
-`-profile secure_lustre` or `-profile farm22`. 
+The pipeline can configured to run either localy on Sanger OpenStack secure-lustre instances or farm22 by changing the profile speicified:
+`-profile local`, `-profile secure_lustre` or `-profile farm22`. 
 
 
 

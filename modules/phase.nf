@@ -100,7 +100,7 @@ process EXTRACT_BAITSET_VARIANTS {
 
 process COMPOSE_MNV_VARIANTS {
     publishDir "${params.outdir}", mode: 'copy'
-    container 'docker://gitlab-registry.internal.sanger.ac.uk/dermatlas/fur_phaser_py:candidate-0.2.0'
+    container "quay.io/team113sanger/fur_phaser_py:0.9.2"
 
     input:
     tuple val(meta), path(subset), path(vcf_file), path(vcf_index)
@@ -110,7 +110,8 @@ process COMPOSE_MNV_VARIANTS {
 
     script:
     """
-    python3 /opt/repo/src/fur_phaser_py/phaser.py -c $subset -p $vcf_file \
+    python3 -m fur_phaser_py \
+    -c $subset -p $vcf_file \
     -o "${meta.contrast}.vcf.gz"
     """
 }

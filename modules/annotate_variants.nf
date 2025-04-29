@@ -2,6 +2,7 @@
 
 process ANNOTATE_VARIANTS {
     publishDir "${params.outdir}", mode: "copy"
+    container "ensemblorg/ensembl-vep:release_104.1"
 
     input:
     tuple val(meta), path(vcf_file)
