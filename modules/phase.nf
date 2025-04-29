@@ -100,7 +100,7 @@ process EXTRACT_BAITSET_VARIANTS {
 
 process COMPOSE_MNV_VARIANTS {
     publishDir "${params.outdir}", mode: 'copy'
-    container "quay.io/team113sanger/fur_phaser_py:0.9.1"
+    container "quay.io/team113sanger/fur_phaser_py:0.9.2"
 
     input:
     tuple val(meta), path(subset), path(vcf_file), path(vcf_index)
