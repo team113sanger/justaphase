@@ -5,7 +5,10 @@ include { ANNOTATE_VARIANTS } from './modules/annotate_variants.nf'
 
 
 workflow  {
-    genome = file(params.genome_files, checkIfExists: true)
+    genome_files_ch = Channel.fromPath(params.genome_files, checkIfExists: true).toList()
+    genome_fa  = genome_files_ch.map { files -> files.find { it.name.endsWith('.fa')  } }
+    genome_fai = genome_files_ch.map { files -> files.find { it.name.endsWith('.fai') } }
+    
     baitset = file(params.baitset, checkIfExists: true)
     vep_cache = file(params.vep_cache, checkIfExists: true)
     custom_files = Channel.of(params.custom_files.split(';'))
@@ -33,7 +36,7 @@ workflow  {
             tuple(meta, vcf, bam, index)}
 
 
-    RUN_WHATSHAP(input_ch, genome)
+    RUN_WHATSHAP(input_ch, genome_fa, genome_fai)
     INDEX_PHASED_VARS(RUN_WHATSHAP.out.phased_vcf)
     FIND_ADJACENT_VARIANTS(INDEX_PHASED_VARS.out.indexed_vcf)
     FIND_ADJACENT_VARIANTS.out.vcf_bed_pair \
