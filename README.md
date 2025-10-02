@@ -22,18 +22,21 @@ In brief, the pipeline takes a set of bam files and corresponding Caveman VCFs a
 
 ## Usage 
 
-The recommended way to launch this pipeline on LSF is using a wrapper script (e.g. `bsub < my_wrapper.sh`) that submits nextflow as a job and records the version (**e.g.** `-r 0.1.1`)  and the `.json` parameter file supplied for a run.
+The recommended way to launch this pipeline on LSF is using a wrapper script (e.g. `bsub < my_wrapper.sh`) that submits nextflow as a job and records the version (**e.g.** `-r 0.1.1`)  and the `.config` config file supplied for a run.
 
 An example wrapper script:
 ```
 #!/bin/bash
-#BSUB -q normal
+#BSUB -q oversubcribed
 #BSUB -R "select[mem>8000] rusage[mem=8000] span[hosts=1]"
 #BSUB -M 8000
-#BSUB -oo nf_out.o
-#BSUB -eo nf_out.e
+#BSUB -oo justaphase_%J.o
+#BSUB -eo justaphase_%J.e
 
-PARAMS_FILE="<YOUR_PARAMS_FILE>"
+set -euo pipefail
+
+CONFIG_FILE="<YOUR_CONFIG_FILE>"
+REVISION="0.2.0"
 
 # Load module dependencies
 module load nextflow-23.10.0
@@ -42,9 +45,8 @@ module load singularity/3.11.4
 # Create a nextflow job that will spawn other jobs
 
 nextflow run 'https://github.com/team113sanger/justaphase' \
--r 0.2.0 \
--params-file $PARAMS_FILE \
--c nextflow.config \
+-r  ${REVISION} \
+-c ${CONFIG_FILE} \
 -profile farm22 
 ```
 
