@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.3.1] - 2025-04-29
+## [0.3.2] - 2025-10-02
+### Fixed
+- Bug fixes when passing reference files to WhatsHap
+
+## [0.3.1] - 2025-10-02
 ### Fixed
 - Broken lustre path to singularity cache directory
 
