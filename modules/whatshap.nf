@@ -4,17 +4,17 @@ process RUN_WHATSHAP {
     
     input:
     tuple val(meta), path(vcf_file), path(bam_file), path(bai)
-    tuple path(reference), path(index)
+    path genome_fa
+    path genome_fai
 
     output: 
     tuple val(meta), path("*.phased.vcf.gz"), emit: phased_vcf
     
     script:
-    def refbase = reference[0].baseName
     """
     whatshap phase \
     -o "${meta.contrast}.phased.vcf.gz" \
-    --reference=$refbase \
+    --reference=${genome_fa} \
     --ignore-read-groups \
     --sample TUMOUR \
     ${vcf_file} \
