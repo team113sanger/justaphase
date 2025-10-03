@@ -52,7 +52,7 @@ workflow  {
                     vep_cache, 
                     custom_files,
                     custom_args,
-                    genome,
+                    genome_fa,
                     params.species,
                     params.assembly,
                     params.db_version)
