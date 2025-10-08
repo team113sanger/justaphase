@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.4] - 2025-10-03
+### Fixed
+- Fixed handling of reference FASTA in annotate_variants.nf
+
 ## [0.3.3] - 2025-10-03
 ### Fixed
 - Fixed incorrect variable name in main.nf
